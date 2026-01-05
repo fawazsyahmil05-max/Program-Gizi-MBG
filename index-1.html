@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizi Tracker Ultimate Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        
+        <header>
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo-circle"><i class="ri-flashlight-fill"></i></div>
+                    <div class="brand-text">
+                        <h1>GiziTracker</h1>
+                        <span id="header-role" class="badge-role">Guest</span>
+                    </div>
+                </div>
+                <button class="btn-icon-only" onclick="toggleTheme()"><i class="ri-moon-line"></i></button>
+            </div>
+        </header>
+
+        <main id="main-content">
+
+            <section id="screen-login" class="screen active">
+                <div class="glass-card center-card">
+                    <div class="icon-header"><i class="ri-user-heart-line"></i></div>
+                    <h2>Welcome Back</h2>
+                    <p class="text-muted">Kelola kesehatanmu dengan data presisi.</p>
+                    
+                    <div class="input-float">
+                        <i class="ri-id-card-line"></i>
+                        <input type="text" id="login-nik" placeholder="NIK / Username">
+                    </div>
+                    <div class="input-float">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" id="login-pass" placeholder="Password">
+                    </div>
+                    
+                    <button class="btn btn-glow btn-full" onclick="login()">Masuk Aplikasi <i class="ri-arrow-right-line"></i></button>
+                    
+                    <div class="divider"><span>atau</span></div>
+                    
+                    <button class="btn btn-glass btn-full" onclick="showScreen('screen-register')">Buat Akun Baru</button>
+                </div>
+            </section>
+
+            <section id="screen-register" class="screen">
+                <div class="glass-card">
+                    <div class="card-title">
+                        <h3>Registrasi Data</h3>
+                        <p>Isi data untuk kalkulasi TDEE otomatis.</p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="input-float full"><i class="ri-id-card-fill"></i><input type="text" id="reg-nik" placeholder="NIK (Unik)"></div>
+                        <div class="input-float"><i class="ri-user-smile-line"></i><input type="text" id="reg-nama" placeholder="Nama"></div>
+                        <div class="input-float"><i class="ri-key-2-line"></i><input type="password" id="reg-pass" placeholder="Password"></div>
+                        
+                        <div class="input-float"><i class="ri-scales-3-line"></i><input type="number" id="reg-berat" placeholder="Berat (kg)"></div>
+                        <div class="input-float"><i class="ri-ruler-line"></i><input type="number" id="reg-tinggi" placeholder="Tinggi (cm)"></div>
+                        <div class="input-float"><i class="ri-cake-2-line"></i><input type="number" id="reg-umur" placeholder="Umur"></div>
+                        
+                        <div class="input-float">
+                            <i class="ri-men-line"></i>
+                            <select id="reg-gender">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-float full">
+                            <i class="ri-run-line"></i>
+                            <select id="reg-act">
+                                <option value="1">Sedentary (Jarang gerak)</option>
+                                <option value="2">Light (1-3x Olahraga)</option>
+                                <option value="3">Moderate (3-5x Olahraga)</option>
+                                <option value="4">Heavy (Atlet)</option>
+                            </select>
+                        </div>
+                        <div class="input-float full">
+                            <i class="ri-flag-2-line"></i>
+                            <select id="reg-goal">
+                                <option value="1">Turun Berat (Defisit)</option>
+                                <option value="2">Jaga Berat (Normal)</option>
+                                <option value="3">Naik Berat (Surplus)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-glow full" onclick="register()">Daftar</button>
+                        <button class="btn btn-glass full" onclick="showScreen('screen-login')">Batal</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="screen-dashboard" class="screen">
+                <div class="glass-card hero-card">
+                    <div class="hero-top">
+                        <div>
+                            <span class="greeting" id="greeting-text">Halo, User</span>
+                            <h1 id="disp-target">0 <small>kkal</small></h1>
+                        </div>
+                        <div class="ring-container">
+                            <svg class="progress-ring" width="80" height="80">
+                                <circle class="progress-ring__circle" stroke="white" stroke-width="6" fill="transparent" r="32" cx="40" cy="40"/>
+                            </svg>
+                            <span id="disp-persen" class="ring-text">0%</span>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="lbl">Masuk</span>
+                            <span class="val" id="disp-masuk">0</span>
+                        </div>
+                        <div class="divider-vert"></div>
+                        <div class="stat-item">
+                            <span class="lbl">Sisa</span>
+                            <span class="val" id="disp-sisa">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-grid">
+                    <div class="menu-box" onclick="openFoodModal()">
+                        <div class="icon-box color-1"><i class="ri-restaurant-2-fill"></i></div>
+                        <span>Makan</span>
+                    </div>
+                    <div class="menu-box" onclick="addWater()">
+                        <div class="icon-box color-2"><i class="ri-drop-fill"></i></div>
+                        <span>Air (<span id="disp-air">0</span>L)</span>
+                    </div>
+                    <div class="menu-box" onclick="openSleepModal()">
+                        <div class="icon-box color-3"><i class="ri-moon-clear-fill"></i></div>
+                        <span>Tidur</span>
+                    </div>
+                    <div class="menu-box" onclick="showScreen('screen-weekly')">
+                        <div class="icon-box color-4"><i class="ri-bar-chart-grouped-fill"></i></div>
+                        <span>Laporan</span>
+                    </div>
+                    <div class="menu-box" onclick="showScreen('screen-education')">
+                        <div class="icon-box color-5"><i class="ri-book-read-fill"></i></div>
+                        <span>Edukasi</span>
+                    </div>
+                    <div class="menu-box" onclick="requestDeleteAccount()">
+                        <div class="icon-box color-6"><i class="ri-delete-bin-5-fill"></i></div>
+                        <span>Hapus</span>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h4>Riwayat Makan</h4>
+                        <span class="badge">Hari Ini</span>
+                    </div>
+                    <ul id="meal-list" class="modern-list">
+                        </ul>
+                </div>
+
+                <div class="glass-card mini-pad">
+                    <small style="color:var(--text-muted); font-family:monospace;">Stack Trace: <span id="stack-breadcrumb"></span></small>
+                </div>
+
+                <button class="btn btn-glass btn-danger btn-full" onclick="logout()">Logout</button>
+            </section>
+
+            <section id="screen-admin" class="screen">
+                <div class="glass-card admin-hero">
+                    <h2>Admin Console</h2>
+                    <div class="admin-grid">
+                        <div class="stat-card">
+                            <i class="ri-user-3-line"></i>
+                            <h3 id="adm-user-count">0</h3>
+                            <span>Users</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="ri-database-2-line"></i>
+                            <h3 id="adm-food-count">0</h3>
+                            <span>Foods</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h4>Queue Request (FIFO)</h4>
+                    <ul id="delete-queue-list" class="modern-list"></ul>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h4>Huffman Analysis</h4>
+                        <button class="btn btn-xs btn-glow" onclick="generateHuffmanReport()">Run</button>
+                    </div>
+                    <div id="huffman-result" class="code-box">Click Run to Analyze</div>
+                </div>
+
+                <div class="glass-card">
+                    <h4>Database Makanan</h4>
+                    <div class="add-row">
+                        <input type="text" id="new-food-name" placeholder="Nama">
+                        <input type="number" id="new-food-cal" placeholder="Kal">
+                        <button class="btn-icon" onclick="addFoodAdmin()"><i class="ri-add-line"></i></button>
+                    </div>
+                    <div class="table-wrap">
+                        <table id="table-foods">
+                            <thead><tr><th>ID</th><th>Nama</th><th>Kal</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <button class="btn btn-glass btn-full" onclick="logout()">Exit Admin</button>
+            </section>
+
+            <section id="screen-weekly" class="screen">
+                <button class="btn-link" onclick="showScreen('screen-dashboard')"><i class="ri-arrow-left-line"></i> Kembali</button>
+                <div class="glass-card">
+                    <h3>Input Log Mingguan</h3>
+                    <div class="form-grid">
+                        <input type="text" id="week-day" placeholder="Hari" class="input-glass">
+                        <input type="number" id="week-weight" placeholder="Berat (kg)" class="input-glass">
+                        <input type="number" id="week-cal" placeholder="Total Kalori" class="input-glass">
+                    </div>
+                    <button class="btn btn-glow btn-full mt-2" onclick="addWeeklyLog()">Simpan</button>
+                </div>
+
+                <div class="glass-card">
+                    <h4>Grafik Berat Badan</h4>
+                    <div id="weekly-chart" class="chart-area"></div>
+                    <table id="table-weekly" class="table-clean">
+                        <thead><tr><th>Hari</th><th>Berat</th><th>Status</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="screen-education" class="screen">
+                <button class="btn-link" onclick="showScreen('screen-dashboard')"><i class="ri-arrow-left-line"></i> Kembali</button>
+                <h2>Pusat Edukasi</h2>
+                
+                <div class="edu-card">
+                    <div class="edu-icon">🔥</div>
+                    <div class="edu-content">
+                        <h4>TDEE Calculator</h4>
+                        <p>Total kalori yang dibakar tubuh. Makan dibawah TDEE untuk defisit kalori.</p>
+                    </div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-icon">🥤</div>
+                    <div class="edu-content">
+                        <h4>Bahaya Gula</h4>
+                        <p>Batas gula harian: 50g. Kelebihan gula memicu resistensi insulin.</p>
+                    </div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-icon">💧</div>
+                    <div class="edu-content">
+                        <h4>Hidrasi</h4>
+                        <p>Target minum: 35ml x Berat Badan. Contoh: 60kg x 35 = 2.1 Liter.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="modal-food" class="modal-backdrop">
+        <div class="modal-glass">
+            <div class="modal-head">
+                <h3>Pilih Makanan</h3>
+                <i class="ri-close-line" onclick="closeModal('modal-food')"></i>
+            </div>
+            <div class="modal-body">
+                <div class="input-float">
+                    <i class="ri-search-line"></i>
+                    <select id="food-select"></select>
+                </div>
+                <div class="input-float">
+                    <i class="ri-time-line"></i>
+                    <select id="meal-time">
+                        <option value="Pagi">Pagi</option>
+                        <option value="Siang">Siang</option>
+                        <option value="Malam">Malam</option>
+                        <option value="Snack">Snack</option>
+                    </select>
+                </div>
+                <button class="btn btn-glow btn-full" onclick="submitMeal()">Catat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-sleep" class="modal-backdrop">
+        <div class="modal-glass">
+            <div class="modal-head">
+                <h3>Analisis Tidur</h3>
+                <i class="ri-close-line" onclick="closeModal('modal-sleep')"></i>
+            </div>
+            <div class="modal-body">
+                <div class="input-float">
+                    <i class="ri-time-fill"></i>
+                    <input type="number" id="sleep-hours" placeholder="Durasi (Jam)">
+                </div>
+                <div class="input-float">
+                    <i class="ri-star-fill"></i>
+                    <select id="sleep-qual">
+                        <option value="5">Sangat Nyenyak</option>
+                        <option value="3">Biasa</option>
+                        <option value="1">Buruk</option>
+                    </select>
+                </div>
+                <button class="btn btn-glow btn-full" onclick="submitSleep()">Analisis</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
